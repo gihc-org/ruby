@@ -1,0 +1,28 @@
+{
+  "name": "ruby-repl",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@bjorn3/browser_wasi_shim": "^0.4.2",
+    "@codemirror/autocomplete": "^6.18.6",
+    "@codemirror/commands": "^6.8.1",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/legacy-modes": "^6.4.2",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.5",
+    "@lezer/highlight": "^1.2.5",
+    "@ruby/3.4-wasm-wasi": "^2.10.1",
+    "@ruby/wasm-wasi": "^2.7.0"
+  },
+  "devDependencies": {
+    "vite": "^6.2.1",
+    "vitest": "^5.1.0"
+  }
+}

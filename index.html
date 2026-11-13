@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1017" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="Skriv og kør Ruby direkte i browseren med interaktiv terminal."
+    />
+    <title>Ruby i browseren</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Ruby i browseren, forside">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <path d="M7 8.5 16 3l9 5.5v15L16 29l-9-5.5z" />
+              <path d="m11.5 12 4.5 8 4.5-8" />
+            </svg>
+          </span>
+          <span>Ruby<span class="brand-dot">.</span>repl</span>
+        </a>
+
+        <div class="runtime-badge" id="runtime-badge">
+          <span class="runtime-dot" aria-hidden="true"></span>
+          <span id="runtime-label">Starter Ruby 3.4</span>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="editor-panel" aria-labelledby="editor-heading">
+          <div class="panel-toolbar">
+            <div class="panel-title">
+              <span class="file-status" aria-hidden="true"></span>
+              <h1 id="editor-heading">main.rb</h1>
+              <span class="language-label">Ruby</span>
+            </div>
+            <div class="toolbar-actions">
+              <button class="text-button" id="reset-code" type="button">
+                Eksempel
+              </button>
+              <button class="run-button" id="run-code" type="button" disabled>
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="m6.5 4.5 8.5 5.5-8.5 5.5z" />
+                </svg>
+                <span>Kør</span>
+                <kbd>⌘↵</kbd>
+              </button>
+              <button class="stop-button" id="stop-code" type="button" hidden>
+                <span class="stop-icon" aria-hidden="true"></span>
+                <span>Stop</span>
+              </button>
+            </div>
+          </div>
+          <div id="editor" class="editor-host"></div>
+          <div class="editor-footer">
+            <span>Ruby 3.4 · UTF-8</span>
+            <span>
+              <kbd>⌘/Ctrl</kbd>
+              <kbd>Enter</kbd>
+              for at køre
+            </span>
+          </div>
+        </section>
+
+        <section class="terminal-panel" aria-labelledby="terminal-heading">
+          <div class="terminal-toolbar">
+            <div class="terminal-heading">
+              <span class="terminal-lights" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <h2 id="terminal-heading">Terminal</h2>
+            </div>
+            <button class="icon-button" id="clear-output" type="button">
+              Ryd
+            </button>
+          </div>
+
+          <div class="terminal-body">
+            <div
+              class="terminal-output"
+              id="terminal-output"
+              role="log"
+              aria-live="polite"
+              aria-label="Ruby-programmets output"
+            ></div>
+            <form class="terminal-input-row" id="input-form">
+              <label for="terminal-input">Input</label>
+              <span class="input-prompt" aria-hidden="true">›</span>
+              <input
+                id="terminal-input"
+                type="text"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="Koden er ikke klar til input endnu"
+                disabled
+              />
+            </form>
+          </div>
+
+          <div class="terminal-footer">
+            <div class="status" id="run-status">
+              <span class="status-dot"></span>
+              <span id="status-text">Forbereder Ruby-runtime…</span>
+            </div>
+            <span class="client-label">Kører lokalt i din browser</span>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="boot-overlay" id="boot-overlay" role="status">
+      <div class="boot-card">
+        <div class="boot-gem" aria-hidden="true">
+          <span></span>
+        </div>
+        <p class="eyebrow">Ruby i browseren</p>
+        <h2 id="boot-title">Starter Ruby 3.4</h2>
+        <p id="boot-message">
+          Henter WebAssembly-runtime og gør editoren klar. Det kan tage et øjeblik
+          første gang.
+        </p>
+        <div class="boot-progress" aria-hidden="true">
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
