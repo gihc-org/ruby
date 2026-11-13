@@ -1,0 +1,7 @@
+.git
+.github
+.vite
+dist
+node_modules
+spil.rb
+*.log

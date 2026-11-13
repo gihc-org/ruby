@@ -34,3 +34,25 @@ Cross-Origin-Embedder-Policy: require-corp
 
 Ved udrulning til en statisk host skal de samme headers konfigureres på
 serveren. Hele appen kan hostes statisk, inklusive den medfølgende Ruby WASM-binær.
+
+## Produktion
+
+Produktionsmiljøet kører på GIHC's k3s-cluster:
+
+- URL: <https://ruby.gihc.online>
+- Namespace: `ruby`
+- Image: `ghcr.io/gihc-org/ruby`
+- TLS: Let's Encrypt via cert-manager
+
+Push til `trunk` bygger og scanner et nyt image i GitHub Actions. DNS og
+førstegangsdeployment kan gøres med:
+
+```bash
+./scripts/create-dns-record.sh
+ssh -L 16443:localhost:6443 -N -f hetzner-k3s
+KUBECTL_SERVER=https://127.0.0.1:16443 ./scripts/deploy.sh
+./scripts/smoke-test.sh
+```
+
+`nginx.conf` sætter COOP/COEP på alle svar. Det er påkrævet for den delte
+inputbuffer og dermed for interaktiv `gets.chomp` i produktion.

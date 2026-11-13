@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ruby
+  namespace: ruby
+  labels:
+    app: ruby
+    app.kubernetes.io/name: ruby
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - ruby.gihc.online
+      secretName: ruby-gihc-online-tls
+  rules:
+    - host: ruby.gihc.online
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ruby
+                port:
+                  number: 80

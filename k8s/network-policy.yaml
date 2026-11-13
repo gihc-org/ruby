@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ruby
+  namespace: ruby
+  labels:
+    app: ruby
+    app.kubernetes.io/name: ruby
+spec:
+  podSelector:
+    matchLabels:
+      app: ruby
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8080
+  # Den statiske side har ingen udgående netværksbehov.
+  egress: []
