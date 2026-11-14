@@ -35,6 +35,41 @@ Cross-Origin-Embedder-Policy: require-corp
 Ved udrulning til en statisk host skal de samme headers konfigureres på
 serveren. Hele appen kan hostes statisk, inklusive den medfølgende Ruby WASM-binær.
 
+### Hvorfor COOP og COEP?
+
+COOP og COEP er HTTP-headere, som tilsammen giver siden **cross-origin
+isolation**. Det er en browser-sikkerhedsmekanisme, der blandt andet kræves for
+at eksponere `SharedArrayBuffer`.
+
+- **COOP** står for **Cross-Origin-Opener-Policy**. Værdien `same-origin`
+  isolerer sidens browsing context fra vinduer med en anden origin, så de ikke
+  kan kontrollere eller kommunikere direkte med sidens `window`.
+- **COEP** står for **Cross-Origin-Embedder-Policy**. Værdien `require-corp`
+  kræver, at eksterne ressourcer eksplicit tillader indlejring via CORS eller
+  `Cross-Origin-Resource-Policy`. Ressourcer fra samme origin er automatisk
+  tilladte.
+
+Når begge headere findes på HTML-svaret, kan appen kontrollere:
+
+```javascript
+window.crossOriginIsolated === true
+```
+
+Ruby-WASM kører i en Web Worker. Når Ruby kalder `gets.chomp`, bliver workerens
+læsefunktion blokeret i `Atomics.wait`, indtil hovedtråden skriver input i en
+`SharedArrayBuffer` og signalerer med `Atomics.notify`. Ruby-WASM kører
+synkront, så input kan ikke erstattes af et almindeligt JavaScript-`Promise`.
+Derfor er den delte buffer nødvendig for at kunne vente på input midt i en
+Ruby-kørsel.
+
+Uden cross-origin isolation er `SharedArrayBuffer` og den nødvendige
+`Atomics.wait`-adfærd ikke tilgængelig på samme måde, og interaktiv
+`gets.chomp` virker derfor ikke.
+
+`Cross-Origin-Resource-Policy: same-origin` begrænser samtidig appens assets til
+samme origin. Hvis der senere tilføjes eksterne scripts, fonts eller andre
+tredjepartsressourcer, skal deres CORS- eller CORP-headere kontrolleres.
+
 ## Produktion
 
 Produktionsmiljøet kører på GIHC's k3s-cluster:
@@ -54,8 +89,8 @@ KUBECTL_SERVER=https://127.0.0.1:16443 ./scripts/deploy.sh
 ./scripts/smoke-test.sh
 ```
 
-`nginx.conf` sætter COOP/COEP på alle svar. Det er påkrævet for den delte
-inputbuffer og dermed for interaktiv `gets.chomp` i produktion.
+`nginx.conf` sætter de samme COOP/COEP-headere i produktion. Det er påkrævet for
+den delte inputbuffer og dermed for interaktiv `gets.chomp`.
 
 Se [docs/deployment.md](docs/deployment.md) for releaseprocedure, fejlfindings-
 kommandoer og de faldgruber, der blev fundet under den første deployment.
