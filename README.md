@@ -56,3 +56,6 @@ KUBECTL_SERVER=https://127.0.0.1:16443 ./scripts/deploy.sh
 
 `nginx.conf` sætter COOP/COEP på alle svar. Det er påkrævet for den delte
 inputbuffer og dermed for interaktiv `gets.chomp` i produktion.
+
+Se [docs/deployment.md](docs/deployment.md) for releaseprocedure, fejlfindings-
+kommandoer og de faldgruber, der blev fundet under den første deployment.

@@ -11,6 +11,7 @@ set -euo pipefail
 #   IMAGE=ghcr.io/gihc-org/ruby:<commit-sha> ./scripts/deploy.sh
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export KUBECONFIG="${KUBECONFIG:-$HOME/.kube/gihc.yml}"
 NAMESPACE="ruby"
 DEPLOYMENT="ruby"
 IMAGE="${IMAGE:-}"
