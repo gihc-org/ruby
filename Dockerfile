@@ -11,6 +11,10 @@ RUN npm test && npm run build
 
 FROM docker.io/nginxinc/nginx-unprivileged:1.31-alpine
 
+USER root
+RUN apk upgrade --no-cache
+USER 101
+
 LABEL org.opencontainers.image.title="Ruby i browseren"
 LABEL org.opencontainers.image.description="Browserbaseret Ruby-editor med interaktiv WASM-terminal"
 LABEL org.opencontainers.image.source="https://github.com/gihc-org/ruby"
