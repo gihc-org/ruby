@@ -31,8 +31,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: web
-          image: ghcr.io/gihc-org/ruby:latest
-          imagePullPolicy: Always
+          image: ghcr.io/gihc-org/ruby:bcb4186152fec21f9fed40054f5cbd66bbc5bc72
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
